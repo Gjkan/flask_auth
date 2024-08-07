@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, make_response, request
+from flask_bcrypt import Bcrypt
 
 from db import create_data_base, create_user_table, create_blacklist_token_table, \
     get_conn_to_db, close_db
@@ -13,7 +14,7 @@ def create_app():
         'config.DevelopmentConfig'
     )
     app.config.from_object(app_settings)
-
+    bcrypt = Bcrypt(app)
     with app.app_context():
         create_data_base()
         create_user_table()
