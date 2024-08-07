@@ -3,6 +3,10 @@ from psycopg2 import sql, connect, ProgrammingError
 from psycopg2.errors import DuplicateTable
 
 
+USER_TABLE_NAME = 'user'
+BLACKLIST_TOKEN_TABLE_NAME = 'blacklist_token'
+
+
 def get_conn_to_db():
     if 'db_conn' not in g:
         for _ in range(2):
@@ -46,7 +50,7 @@ def create_user_table():
     conn = get_conn_to_db()
     if conn:
         cursor = conn.cursor()
-        user_table_name = sql.Identifier('user')
+        user_table_name = sql.Identifier(USER_TABLE_NAME)
         try:
             cursor.execute(sql.SQL("""
                                   CREATE TABLE {user_table_name}
@@ -70,7 +74,7 @@ def create_blacklist_token_table():
     conn = get_conn_to_db()
     if conn:
         cursor = conn.cursor()
-        blacklist_token_table_name = sql.Identifier('blacklist_token_table')
+        blacklist_token_table_name = sql.Identifier(BLACKLIST_TOKEN_TABLE_NAME)
         try:
             cursor.execute(sql.SQL("""
                                   CREATE TABLE {blacklist_token_table_name}
