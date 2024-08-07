@@ -28,7 +28,7 @@ def create_data_base():
         else:
             print(f"База данных {db_name} успешно создана.")
         cursor.close()
-        conn.close()
+        close_db_conn()
 
 
 def create_user_table():
@@ -52,7 +52,7 @@ def create_user_table():
             conn.commit()
             print(f"Таблица {user_table_name} успешно создана.")
         cursor.close()
-        conn.close()
+        close_db_conn()
 
 
 def create_blacklist_token_table():
@@ -74,10 +74,10 @@ def create_blacklist_token_table():
             conn.commit()
             print(f"Таблица {blacklist_token_table_name} успешно создана.")
         cursor.close()
-        conn.close()
+        close_db_conn()
 
 
-def close_db():
+def close_db_conn():
     db_conn = g.pop('db_conn', None)
 
     if db_conn is not None:
