@@ -5,11 +5,21 @@ from psycopg2.errors import DuplicateTable
 
 def get_conn_to_db():
     if 'db_conn' not in g:
-        g.db_conn = connect(database=current_app.config['DB_NAME'],
-                            user=current_app.config['DB_USER'],
-                            password=current_app.config['DB_PASSWORD'],
-                            host=current_app.config['DB_HOST'],
-                            port=current_app.config['DB_PORT'])
+        for _ in range(2):
+            try:
+                print('Выполняется попытка подключения к базе данных.')
+                g.db_conn = connect(database=current_app.config['DB_NAME'],
+                                    user=current_app.config['DB_USER'],
+                                    password=current_app.config['DB_PASSWORD'],
+                                    host=current_app.config['DB_HOST'],
+                                    port=current_app.config['DB_PORT'])
+            except (OperationalError, InterfaceError) as e:
+                print(f'Возникло исключение {e} при попытке установить соединение с базой данных.')
+            else:
+                print('Соединение с базой данных установлено.')
+                break
+        else:
+            return None                                    
     return g.db_conn
 
 
