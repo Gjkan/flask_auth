@@ -28,4 +28,18 @@ def save_token(token, is_blacklisted=False):
     conn.commit()
     cursor.close()
     close_db_conn()
+   
+
+def get_user_id_or_none(email, password):
+    conn = get_conn_to_db()
+    cursor = conn.cursor()
+    data = [email, password]
+    cursor.execute(sql.SQL("""SELECT id FROM {user_table_name} WHERE
+                              (email = %s AND password = %s);""").format(
+        user_table_name=USER_TABLE_NAME), data)
+    id = cursor.fetchone()
+    cursor.close()
+    close_db_conn()
+    return id
+   
     
